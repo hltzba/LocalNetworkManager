@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datas>
+  <InterV4NetworkInfo>
+    <ProgrammeName>外网</ProgrammeName>
+    <IPAddress>192.168.15.143</IPAddress>
+    <SubnetMask>255.255.255.0</SubnetMask>
+    <DefaultGetway>192.168.15.254</DefaultGetway>
+    <DefaultDNS>223.6.6.6</DefaultDNS>
+    <ReserveDNS>114.114.114.114</ReserveDNS>
+  </InterV4NetworkInfo>
+</Datas>
