@@ -28,5 +28,11 @@ namespace DataModel
 
         public string ReserveDNS
         { get; set; }
+
+        /// <summary>
+        /// 开启DHCP状态1-开启，2关闭
+        /// </summary>
+        public int EnableDHCP
+        { get; set; }
     }
 }

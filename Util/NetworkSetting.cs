@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Management;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -39,59 +40,65 @@ namespace Util
         /// <summary>
         /// 设置DNS
         /// </summary>
+        /// <param name="NetCardDesc">网卡名</param>
         /// <param name="dns"></param>
-        public static void SetDNS(string[] dns)
+        public static void SetDNS(string NetCardDesc, string[] dns)
         {
-            SetIPAddress(null, null, null, dns);
+            SetIPAddress(NetCardDesc, null, null, null, dns);
         }
 
         /// <summary>
         /// 设置网关
         /// </summary>
+        /// <param name="NetCardDesc">网卡名</param>
         /// <param name="getway"></param>
-        public static void SetGetWay(string getway)
+        public static void SetGetWay(string NetCardDesc, string getway)
         {
-            SetIPAddress(null, null, new string[] { getway }, null);
+            SetIPAddress(NetCardDesc, null, null, new string[] { getway }, null);
         }
 
         /// <summary>
         /// 设置网关
         /// </summary>
+        /// <param name="NetCardDesc">网卡名</param>
         /// <param name="getway"></param>
-        public static void SetGetWay(string[] getway)
+        public static void SetGetWay(string NetCardDesc, string[] getway)
         {
-            SetIPAddress(null, null, getway, null);
+            SetIPAddress(NetCardDesc, null, null, getway, null);
         }
 
         /// <summary>
         /// 设置IP地址和掩码
         /// </summary>
+        /// <param name="NetCardDesc">网卡名</param>
         /// <param name="ip"></param>
         /// <param name="submask"></param>
-        public static void SetIPAddress(string ip, string submask)
+        public static void SetIPAddress(string NetCardDesc, string ip, string submask)
         {
-            SetIPAddress(new string[] { ip }, new string[] { submask }, null, null);
+            SetIPAddress(NetCardDesc, new string[] { ip }, new string[] { submask }, null, null);
         }
 
         /// <summary>
         /// 设置IP地址，掩码和网关
         /// </summary>
+        /// <param name="NetCardDesc">网卡名</param>
         /// <param name="ip"></param>
         /// <param name="submask"></param>
         /// <param name="getway"></param>
-        public static void SetIPAddress(string ip, string submask, string getway)
+        public static void SetIPAddress(string NetCardDesc, string ip, string submask, string getway)
         {
-            SetIPAddress(new string[] { ip }, new string[] { submask }, new string[] { getway }, null);
+            SetIPAddress(NetCardDesc, new string[] { ip }, new string[] { submask }, new string[] { getway }, null);
         }
 
         /// <summary>
         /// 设置IP地址，掩码，网关和DNS
         /// </summary>
+        /// <param name="NetCardDesc">网卡名</param>
         /// <param name="ip"></param>
         /// <param name="submask"></param>
         /// <param name="getway"></param>
         /// <param name="dns"></param>
-        public static void SetIPAddress(string[] ip, string[] submask, string[] getway, string[] dns)
+        public static void SetIPAddress(string NetCardDesc, string[] ip, string[] submask, string[] getway, string[] dns)
         {
             ManagementClass wmi = new ManagementClass("Win32_NetworkAdapterConfiguration");
             ManagementObjectCollection moc = wmi.GetInstances();
@@ -101,9 +108,9 @@ namespace Util
             {
                 //如果没有启用IP设置的网络设备则跳过
 
-                if (!(bool)mo["IPEnabled"])
+                if (!(bool)mo["IPEnabled"] || mo.Properties["Caption"].Value.ToString() != NetCardDesc)
                     continue;
-
+                //  Debug.Print(mo.Properties["Caption"].Value.ToString());
                 //设置IP地址和掩码
                 if (ip != null && submask != null)
                 {
